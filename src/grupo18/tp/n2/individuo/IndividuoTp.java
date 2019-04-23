@@ -4,9 +4,9 @@ import main.java.ar.edu.utn.frba.ia.ag.Individuo;
 
 public class IndividuoTp extends Individuo {
 
-    private int colorOjos;
-    private int colorPiel;
-    private int colorPelo;
+    private int colorOjos = 0;
+    private int colorPiel = 1;
+    private int colorPelo = 1;
 
     @Override
     public double aptitud() {
