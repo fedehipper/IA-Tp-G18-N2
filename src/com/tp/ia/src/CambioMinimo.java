@@ -1,6 +1,5 @@
 package com.tp.ia.src;
 
-import static com.tp.ia.TpIA.guardarPoblacion;
 import org.jgap.Chromosome;
 import org.jgap.Configuration;
 import org.jgap.FitnessFunction;
@@ -62,7 +61,6 @@ public class CambioMinimo {
 
         long TiempoFin = System.currentTimeMillis();
         System.out.println("Tiempo total de evolucion: " + (TiempoFin - TiempoComienzo) + " ms");
-        guardarPoblacion(Poblacion);
         // Una vez que la poblacion evoluciono es necesario obtener el cromosoma
         // mas apto para mostrarlo como solucion al problema planteado para ello
         // se utiliza el metodo getFittestChromosome
