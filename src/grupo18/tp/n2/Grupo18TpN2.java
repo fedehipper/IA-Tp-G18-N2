@@ -26,7 +26,7 @@ public class Grupo18TpN2 {
         CriterioDeParo criterioDeParo = new TiempoTranscurrido(0, 0, 10);
 
         // los incluimos en la configuracion
-        Configuracion configuracion = new ConfiguracionTp(criterioDeParo, 100000, seleccion, cruzamiento, mutacion);
+        Configuracion configuracion = new ConfiguracionTp(criterioDeParo, 100, seleccion, cruzamiento, mutacion);
 
         AlgoritmoGenetico algoritmoGenetico = new AlgoritmoGenetico(configuracion, IndividuoTp.class);
         

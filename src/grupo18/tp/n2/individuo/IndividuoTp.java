@@ -1,8 +1,6 @@
 package grupo18.tp.n2.individuo;
 
-import static java.util.Arrays.asList;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
 import main.java.ar.edu.utn.frba.ia.ag.Individuo;
 
 public class IndividuoTp extends Individuo {
@@ -14,39 +12,20 @@ public class IndividuoTp extends Individuo {
 
     @Override
     public double aptitud() {
-        return 1;
+        return esAptoPorSexo();
     }
 
     @Override
     public Individuo generarRandom() {
-        List<String> nombresPosibles = asList(
-                "Alejandra",
-                "Ana",
-                "Andres",
-                "Carlos",
-                "Carolina",
-                "David",
-                "Juan",
-                "Luisa",
-                "Maria",
-                "Marta",
-                "Pablo",
-                "Pedro",
-                "Ricardo",
-                "Rosa"
-        );
-
-        List<String> sexosPosibles = asList("F", "M");
-        List<String> acerasPosibles = asList("Fila 1", "Fila 2");
 
         int randomAcera = getNumeroRandom(0, 1);
         int randomSexo = getNumeroRandom(0, 1);
         int randomNombre = getNumeroRandom(0, 13);
-        int randomUbicacionCasa = getNumeroRandom(0, 6);
+        int randomUbicacionCasa = getNumeroRandom(1, 7);
 
-        String nombreGenerado = nombresPosibles.get(randomNombre);
-        String sexoGenerado = sexosPosibles.get(randomSexo);
-        String aceraGenerada = acerasPosibles.get(randomAcera);
+        String nombreGenerado = IndividuoConfig.NOMBRES_POSIBLES.get(randomNombre);
+        String sexoGenerado = IndividuoConfig.SEXOS_POSIBLES.get(randomSexo);
+        String aceraGenerada = IndividuoConfig.ACERAS_POSIBLES.get(randomAcera);
         int ubicacionCasaGenerada = randomUbicacionCasa;
 
         IndividuoTp individuoTp = new IndividuoTp();
@@ -57,9 +36,26 @@ public class IndividuoTp extends Individuo {
 
         return individuoTp;
     }
-    
-    private int getNumeroRandom(int min, int max) {
-        return ThreadLocalRandom.current().nextInt(min, max);
+
+    private int esAptoPorSexo() {
+        if (esHombre() || esMujer()) {
+            return 10;
+        } else {
+            return -10;
+        }
+    }
+
+    private boolean esHombre() {
+        return IndividuoConfig.NOMBRES_SEXO_MASCULINO.contains(this.nombre) && this.sexo.equals("M");
+    }
+
+    private boolean esMujer() {
+        return IndividuoConfig.NOMBRES_SEXO_FEMENINO.contains(this.nombre) && this.sexo.equals("F");
+    }
+
+    private int getNumeroRandom(int minimo, int maximo) {
+        Random random = new Random();
+        return random.nextInt((maximo - minimo) + 1) + minimo;
     }
 
     /* Getters and Setters */
