@@ -17,14 +17,14 @@ public class IndividuoTp extends Individuo {
     @Override
     public Individuo generarRandom() {
         IndividuoTp individuoTp = new IndividuoTp();
+        List<Integer> listaRandomAceras = listaRandomAceras();
         for (int i = 0; i < 14; i++) {
-            int randomAcera = getNumeroRandom(0, 1);
             int randomSexo = getNumeroRandom(0, 1);
             int randomUbicacionCasa = getNumeroRandom(1, 7);
 
             String nombre = IndividuoConfig.NOMBRES_POSIBLES.get(i);
             String sexoGenerado = IndividuoConfig.SEXOS_POSIBLES.get(randomSexo);
-            String aceraGenerada = IndividuoConfig.ACERAS_POSIBLES.get(randomAcera);
+            String aceraGenerada = IndividuoConfig.ACERAS_POSIBLES.get(listaRandomAceras.get(i));
             int ubicacionCasaGenerada = randomUbicacionCasa;
 
             Gen gen = new Gen(nombre, aceraGenerada, ubicacionCasaGenerada, sexoGenerado);
@@ -41,7 +41,7 @@ public class IndividuoTp extends Individuo {
                 .count();
         return cantidadHombres == 7 ? 10 : -10;
     }
-    
+
     private int esAptoPorCantidadMujeres() {
         long cantidadMujeres = this.genes
                 .stream()
@@ -53,7 +53,7 @@ public class IndividuoTp extends Individuo {
     private boolean esHombre(Gen gen) {
         return IndividuoConfig.NOMBRES_SEXO_MASCULINO.contains(gen.getNombre()) && gen.getSexo().equals("M");
     }
-    
+
     private boolean esMujer(Gen gen) {
         return !IndividuoConfig.NOMBRES_SEXO_MASCULINO.contains(gen.getNombre()) && gen.getSexo().equals("F");
     }
@@ -69,6 +69,52 @@ public class IndividuoTp extends Individuo {
 
     public void setGenes(List<Gen> genes) {
         this.genes = genes;
+    }
+
+    /* Reglas acertijo */
+//    private Gen obtenerGenPorNombre(String nombre) {
+//        return this.genes
+//                .stream()
+//                .filter(gen -> nombre.equals(gen.getNombre()))
+//                .findFirst()
+//                .get();
+//    }
+//
+//    private Gen obtenerGenPorUbicacionCasa(int ubicacionCasa) {
+//        return this.genes
+//                .stream()
+//                .filter(gen -> ubicacionCasa.equals(gen.getUbicacionCasa()))
+//                
+//    }
+//
+//    private int reglaMariaViveAlLadoDeUnaMujer() {
+//        Gen genMaria = obtenerGenPorNombre("Maria");
+//        this.genes
+//                .stream()
+//                .filter(gen -> genMaria.getAcera().equals(gen.getAcera()))
+//                
+//    }
+    private List<Integer> listaRandomAceras() {
+        int cantidadAcerasUno = 0;
+        int cantidadAcerasDos = 0;
+        List<Integer> listaAceras = new ArrayList<>();
+        int randomAcera = 0;
+
+        while (true) {
+            randomAcera = getNumeroRandom(0, 1);
+            if (randomAcera == 0 && cantidadAcerasUno < 7) {
+                cantidadAcerasUno++;
+                listaAceras.add(randomAcera);
+            }
+            if (randomAcera == 1 && cantidadAcerasDos < 7) {
+                cantidadAcerasDos++;
+                listaAceras.add(randomAcera);
+            }
+            if (cantidadAcerasDos == 7 && cantidadAcerasUno == 7) {
+                break;
+            }
+        }
+        return listaAceras;
     }
 
 }
