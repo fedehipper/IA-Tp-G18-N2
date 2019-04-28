@@ -18,14 +18,16 @@ public class IndividuoTp extends Individuo {
     public Individuo generarRandom() {
         IndividuoTp individuoTp = new IndividuoTp();
         List<Integer> listaRandomAceras = listaRandomAceras();
+        List<Integer> listaRandomUnicacionesCasa = listaRandomUbicacionesCasa();
+        
+        
         for (int i = 0; i < 14; i++) {
             int randomSexo = getNumeroRandom(0, 1);
-            int randomUbicacionCasa = getNumeroRandom(1, 7);
 
             String nombre = IndividuoConfig.NOMBRES_POSIBLES.get(i);
             String sexoGenerado = IndividuoConfig.SEXOS_POSIBLES.get(randomSexo);
             String aceraGenerada = IndividuoConfig.ACERAS_POSIBLES.get(listaRandomAceras.get(i));
-            int ubicacionCasaGenerada = randomUbicacionCasa;
+            int ubicacionCasaGenerada = listaRandomUnicacionesCasa.get(i);
 
             Gen gen = new Gen(nombre, aceraGenerada, ubicacionCasaGenerada, sexoGenerado);
 
@@ -115,6 +117,31 @@ public class IndividuoTp extends Individuo {
             }
         }
         return listaAceras;
+    }
+    
+    private List<Integer> listaRandomUbicacionesCasaPorFila() {
+        List<Integer> listaUbicacionesCasa = new ArrayList<>();
+        int randomUbicacionCasa = 0;
+        while (true) {
+            randomUbicacionCasa = getNumeroRandom(1, 7);
+            if (!listaUbicacionesCasa.contains(randomUbicacionCasa) && listaUbicacionesCasa.size() < 7) {
+                listaUbicacionesCasa.add(randomUbicacionCasa);
+            }
+            if (listaUbicacionesCasa.size() == 7) {
+                break;
+            }
+        }
+        return listaUbicacionesCasa;
+    }
+    
+    private List<Integer> listaRandomUbicacionesCasa() {
+        List<Integer> listaRandomUbicacionesCasa = new ArrayList<>();
+        listaRandomUbicacionesCasaPorFila()
+                .forEach(ubicacion -> listaRandomUbicacionesCasa.add(ubicacion));
+        listaRandomUbicacionesCasaPorFila()
+                .forEach(ubicacion -> listaRandomUbicacionesCasa.add(ubicacion));
+        
+        return listaRandomUbicacionesCasa;
     }
 
 }
