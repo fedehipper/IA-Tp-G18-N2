@@ -16,7 +16,8 @@ public class IndividuoTp extends Individuo {
     public double aptitud() {
         return esAptoPorCantidadHombres()
                 + esAptoPorCantidadMujeres()
-                + reglaMariaViveAlLadoDeUnaMujer();
+                + reglaMariaViveAlLadoDeUnaMujer()
+                + reglaRicardoViveAlLadoDeCarlos();
     }
 
     @Override
@@ -38,7 +39,7 @@ public class IndividuoTp extends Individuo {
                 .forEach(aceraUno -> listaRandomAceras.add(aceraUno));
         listaRandomAcerasDos
                 .forEach(aceraDos -> listaRandomAceras.add(aceraDos));
-
+        
         for (int i = 0; i < 14; i++) {
             int randomSexo = getNumeroRandom(0, 1);
 
@@ -181,6 +182,36 @@ public class IndividuoTp extends Individuo {
             }
         }
 
+        return 0;
+    }
+
+    // no funca
+    private int reglaRicardoViveAlLadoDeCarlos() {
+        Gen genRicardo = obtenerGenPorNombre("Ricardo");
+        Gen genCarlos = obtenerGenPorNombre("Carlos");
+        int ubicacionRicardo = genRicardo.getUbicacionCasa();
+        int ubicacionCarlos = genCarlos.getUbicacionCasa();
+
+        if (!genRicardo.getAcera().equals(genCarlos.getAcera())) {
+            return 0;
+        } else {
+            if (ubicacionRicardo == 1 && ubicacionCarlos == 2) {
+                System.out.println("algo");
+                return 10;
+            }
+
+            if (ubicacionRicardo == 7 && ubicacionCarlos == 6) {
+                System.out.println("algo");
+                return 10;
+            }
+
+            if (ubicacionRicardo != 7 && genRicardo.getUbicacionCasa() != 1) {
+                if ((ubicacionRicardo + 1 == ubicacionCarlos) || (ubicacionRicardo - 1 == ubicacionCarlos)) {
+                    System.out.println("algo");
+                    return 10;
+                }
+            }
+        }
         return 0;
     }
 
