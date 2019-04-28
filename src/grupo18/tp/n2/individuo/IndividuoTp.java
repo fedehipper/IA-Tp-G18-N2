@@ -91,52 +91,6 @@ public class IndividuoTp extends Individuo {
         this.genes = genes;
     }
 
-    /* Reglas acertijo */
-    private Gen obtenerGenPorNombre(String nombre) {
-        return this.genes
-                .stream()
-                .filter(gen -> nombre.equals(gen.getNombre()))
-                .findFirst()
-                .get();
-    }
-
-    private Gen obtenerGenPorUbicacionCasaYAcera(int ubicacionCasa, String acera) {
-        return this.genes
-                .stream()
-                .filter(gen -> ubicacionCasa == gen.getUbicacionCasa() && acera.equals(gen.getAcera()))
-                .findFirst()
-                .get();
-    }
-
-    private int reglaMariaViveAlLadoDeUnaMujer() {
-        Gen genMaria = obtenerGenPorNombre("Maria");
-
-        if (genMaria.getUbicacionCasa() == 1) {
-            Gen genProximoAMaria = obtenerGenPorUbicacionCasaYAcera(genMaria.getUbicacionCasa() + 1, genMaria.getAcera());
-            if ("F".equals(genProximoAMaria.getSexo())) {
-                return 10;
-            }
-        }
-
-        if (genMaria.getUbicacionCasa() == 7) {
-            Gen genProximoAMaria = obtenerGenPorUbicacionCasaYAcera(genMaria.getUbicacionCasa() - 1, genMaria.getAcera());
-            if ("F".equals(genProximoAMaria.getSexo())) {
-                return 10;
-            }
-        }
-
-        if (genMaria.getUbicacionCasa() != 7 && genMaria.getUbicacionCasa() != 1) {
-            Gen genAIzquierdaDeMaria = obtenerGenPorUbicacionCasaYAcera(genMaria.getUbicacionCasa() + 1, genMaria.getAcera());
-            Gen genADerechaDeMaria = obtenerGenPorUbicacionCasaYAcera(genMaria.getUbicacionCasa() - 1, genMaria.getAcera());
-
-            if ("F".equals(genAIzquierdaDeMaria.getSexo()) || "F".equals(genADerechaDeMaria.getSexo())) {
-                return 10;
-            }
-        }
-
-        return 0;
-    }
-
     /* metodos para random de genes */
     private List<Integer> listaRandomUbicacionesCasaPorFila() {
         List<Integer> listaUbicacionesCasa = new ArrayList<>();
@@ -182,6 +136,52 @@ public class IndividuoTp extends Individuo {
 
     private int complemento(int unoOCero) {
         return unoOCero == 1 ? 0 : 1;
+    }
+
+    /* Reglas acertijo */
+    private Gen obtenerGenPorNombre(String nombre) {
+        return this.genes
+                .stream()
+                .filter(gen -> nombre.equals(gen.getNombre()))
+                .findFirst()
+                .get();
+    }
+
+    private Gen obtenerGenPorUbicacionCasaYAcera(int ubicacionCasa, String acera) {
+        return this.genes
+                .stream()
+                .filter(gen -> ubicacionCasa == gen.getUbicacionCasa() && acera.equals(gen.getAcera()))
+                .findFirst()
+                .get();
+    }
+
+    private int reglaMariaViveAlLadoDeUnaMujer() {
+        Gen genMaria = obtenerGenPorNombre("Maria");
+
+        if (genMaria.getUbicacionCasa() == 1) {
+            Gen genProximoAMaria = obtenerGenPorUbicacionCasaYAcera(genMaria.getUbicacionCasa() + 1, genMaria.getAcera());
+            if ("F".equals(genProximoAMaria.getSexo())) {
+                return 10;
+            }
+        }
+
+        if (genMaria.getUbicacionCasa() == 7) {
+            Gen genProximoAMaria = obtenerGenPorUbicacionCasaYAcera(genMaria.getUbicacionCasa() - 1, genMaria.getAcera());
+            if ("F".equals(genProximoAMaria.getSexo())) {
+                return 10;
+            }
+        }
+
+        if (genMaria.getUbicacionCasa() != 7 && genMaria.getUbicacionCasa() != 1) {
+            Gen genAIzquierdaDeMaria = obtenerGenPorUbicacionCasaYAcera(genMaria.getUbicacionCasa() + 1, genMaria.getAcera());
+            Gen genADerechaDeMaria = obtenerGenPorUbicacionCasaYAcera(genMaria.getUbicacionCasa() - 1, genMaria.getAcera());
+
+            if ("F".equals(genAIzquierdaDeMaria.getSexo()) || "F".equals(genADerechaDeMaria.getSexo())) {
+                return 10;
+            }
+        }
+
+        return 0;
     }
 
 }
