@@ -23,7 +23,7 @@ public class Grupo18TpN2 {
         
         Mutacion mutacion = new MutacionSimple(0.1);
 
-        CriterioDeParo criterioDeParo = new TiempoTranscurrido(0, 1, 0);
+        CriterioDeParo criterioDeParo = new TiempoTranscurrido(0, 2, 0);
 
         // los incluimos en la configuracion
         Configuracion configuracion = new ConfiguracionTp(criterioDeParo, 100000, seleccion, cruzamiento, mutacion);
