@@ -16,7 +16,7 @@ public class IndividuoTp extends Individuo {
         return esAptoPorCantidadHombres()
                 + esAptoPorCantidadMujeres()
                 + reglaMariaViveAlLadoDeUnaMujer()
-                //                + reglaRicardoViveAlLadoDeCarlos()
+                + reglaRicardoViveAlLadoDeCarlos()
                 + reglaAnaViveAceraOpuestaAMarta()
                 + reglaAlejandraViveEnEsquina()
                 + reglaCarlosViveAMitadDeCuadra()
@@ -157,33 +157,33 @@ public class IndividuoTp extends Individuo {
 
         return 0;
     }
+    
+    private int reglaRicardoViveAlLadoDeCarlos() {
+        Gen genRicardo = obtenerGenPorNombre("Ricardo");
+        Gen genCarlos = obtenerGenPorNombre("Carlos");
+        int ubicacionRicardo = genRicardo.getUbicacionCasa();
+        int ubicacionCarlos = genCarlos.getUbicacionCasa();
 
-    // no funca
-//    private int reglaRicardoViveAlLadoDeCarlos() {
-//        Gen genRicardo = obtenerGenPorNombre("Ricardo");
-//        Gen genCarlos = obtenerGenPorNombre("Carlos");
-//        int ubicacionRicardo = genRicardo.getUbicacionCasa();
-//        int ubicacionCarlos = genCarlos.getUbicacionCasa();
-//
-//        if (!genRicardo.getAcera().equals(genCarlos.getAcera())) {
-//            return 0;
-//        } else {
-//            if (ubicacionRicardo == 1 && ubicacionCarlos == 2) {
-//                return 10;
-//            }
-//
-//            if (ubicacionRicardo == 7 && ubicacionCarlos == 6) {
-//                return 10;
-//            }
-//
-//            if (ubicacionRicardo != 7 && genRicardo.getUbicacionCasa() != 1) {
-//                if ((ubicacionRicardo + 1 == ubicacionCarlos) || (ubicacionRicardo - 1 == ubicacionCarlos)) {
-//                    return 10;
-//                }
-//            }
-//        }
-//        return 0;
-//    }
+        if (!genRicardo.getAcera().equals(genCarlos.getAcera())) {
+            return 0;
+        } else {
+            if (ubicacionRicardo == 1 && ubicacionCarlos == 2) {
+                return 10;
+            }
+
+            if (ubicacionRicardo == 7 && ubicacionCarlos == 6) {
+                return 10;
+            }
+
+            if (ubicacionRicardo != 7 && genRicardo.getUbicacionCasa() != 1) {
+                if ((ubicacionRicardo + 1 == ubicacionCarlos) || (ubicacionRicardo - 1 == ubicacionCarlos)) {
+                    return 10;
+                }
+            }
+        }
+        return 0;
+    }
+
     private int reglaAnaViveAceraOpuestaAMarta() {
         Gen genAna = obtenerGenPorNombre("Ana");
         Gen genMarta = obtenerGenPorNombre("Marta");
