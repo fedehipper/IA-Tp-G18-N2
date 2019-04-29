@@ -2,11 +2,9 @@ package grupo18.tp.n2.individuo;
 
 import java.util.ArrayList;
 import static java.util.Arrays.asList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import static java.util.stream.Collectors.toList;
 import main.java.ar.edu.utn.frba.ia.ag.Individuo;
 
 public class IndividuoTp extends Individuo {
@@ -29,22 +27,15 @@ public class IndividuoTp extends Individuo {
     @Override
     public Individuo generarRandom() {
         IndividuoTp individuoTp = new IndividuoTp();
-        Map<Integer, Map<Integer, Integer>> filasConUbicaciones = filasConUbicacionesSinRepetir();
-        List<Integer> listaRandomUbicacionesUno = filasConUbicaciones.get(1).keySet().stream().collect(toList());
-        List<Integer> listaRandomUbicacionesDos = filasConUbicaciones.get(2).keySet().stream().collect(toList());
-        List<Integer> listaRandomUbicacionesCasa = new ArrayList<>();
-        listaRandomUbicacionesUno
-                .forEach(aceraUno -> listaRandomUbicacionesCasa.add(aceraUno));
-        listaRandomUbicacionesDos
-                .forEach(aceraDos -> listaRandomUbicacionesCasa.add(aceraDos));
 
-        List<Integer> listaRandomAcerasUno = filasConUbicaciones.get(1).values().stream().collect(toList());
-        List<Integer> listaRandomAcerasDos = filasConUbicaciones.get(2).values().stream().collect(toList());
-        List<Integer> listaRandomAceras = new ArrayList<>();
-        listaRandomAcerasUno
-                .forEach(aceraUno -> listaRandomAceras.add(aceraUno));
-        listaRandomAcerasDos
-                .forEach(aceraDos -> listaRandomAceras.add(aceraDos));
+        List<Integer> ubicacionesUno = asList(1, 2, 3, 4, 5, 6, 7);
+        List<Integer> ubicacionesDos = asList(1, 2, 3, 4, 5, 6, 7);
+        Collections.shuffle(ubicacionesUno);
+        Collections.shuffle(ubicacionesDos);
+
+        List<Integer> listaRandomAceras = obtenerListaRandomAcerasPorUbicaciones(ubicacionesUno, ubicacionesDos);
+
+        List<Integer> listaRandomUbicacionesCasa = cancatenarListas(ubicacionesUno, ubicacionesDos);
 
         for (int i = 0; i < 14; i++) {
             int randomSexo = getNumeroRandom(0, 1);
@@ -99,50 +90,26 @@ public class IndividuoTp extends Individuo {
     }
 
     /* metodos para random de genes */
-    private List<Integer> listaRandomUbicacionesCasaPorFila() {
-        List<Integer> listaUbicacionesCasa = new ArrayList<>();
-        int randomUbicacionCasa = 0;
-        while (true) {
-            randomUbicacionCasa = getNumeroRandom(1, 7);
-            if (!listaUbicacionesCasa.contains(randomUbicacionCasa) && listaUbicacionesCasa.size() < 7) {
-                listaUbicacionesCasa.add(randomUbicacionCasa);
-            }
-            if (listaUbicacionesCasa.size() == 7) {
-                break;
-            }
+    private List<Integer> obtenerListaRandomAcerasPorUbicaciones(List<Integer> ubicacionesUno, List<Integer> ubicacionesDos) {
+        List<Integer> listaAceras = asList(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
+        for (int i = 1; i < 8; i++) {
+            int randomAcera = getNumeroRandom(0, 1);
+            int valorUbicacionesUno = ubicacionesUno.get(i - 1);
+            listaAceras.set(i - 1, randomAcera);
+            listaAceras.set(ubicacionesDos.indexOf(valorUbicacionesUno) + 7, complemento(randomAcera));
         }
-        return listaUbicacionesCasa;
-    }
-
-    private Map<Integer, Map<Integer, Integer>> filasConUbicacionesSinRepetir() {
-        List<Integer> ubicacionesFilaUno = listaRandomUbicacionesCasaPorFila();
-        List<Integer> ubicacionesFilaDos = listaRandomUbicacionesCasaPorFila();
-
-        Map<Integer, Integer> ubicacionesConFilaUno = new HashMap<>();
-        Map<Integer, Integer> ubicacionesConFilaDos = new HashMap<>();
-
-        ubicacionesFilaUno
-                .forEach(ubicacionFilaUno -> ubicacionesConFilaUno.put(ubicacionFilaUno, -1));
-        ubicacionesFilaDos
-                .forEach(ubicacionFilaDos -> ubicacionesConFilaDos.put(ubicacionFilaDos, -1));
-
-        for (int i = 0; i < 7; i++) {
-            ubicacionesConFilaUno.put(i + 1, getNumeroRandom(0, 1));
-        }
-
-        for (int j = 0; j < 7; j++) {
-            ubicacionesConFilaDos.put(j + 1, complemento(ubicacionesConFilaUno.get(j + 1)));
-        }
-
-        Map<Integer, Map<Integer, Integer>> filasConUbicacionesSinRepetir = new HashMap<>();
-        filasConUbicacionesSinRepetir.put(1, ubicacionesConFilaUno);
-        filasConUbicacionesSinRepetir.put(2, ubicacionesConFilaDos);
-
-        return filasConUbicacionesSinRepetir;
+        return listaAceras;
     }
 
     private int complemento(int unoOCero) {
         return unoOCero == 1 ? 0 : 1;
+    }
+
+    private List<Integer> cancatenarListas(List<Integer> ubicacionesUno, List<Integer> ubicacionesDos) {
+        List<Integer> listaConcatenada = new ArrayList<>();
+        listaConcatenada.addAll(ubicacionesUno);
+        listaConcatenada.addAll(ubicacionesDos);
+        return listaConcatenada;
     }
 
     /* Reglas acertijo */
@@ -222,7 +189,7 @@ public class IndividuoTp extends Individuo {
         Gen genMarta = obtenerGenPorNombre("Marta");
         return genAna.getAcera().equals(genMarta.getAcera()) ? 0 : 10;
     }
-    
+
     private int reglaMaríaViveMismaAceraQueCarolina() {
         Gen genMaria = obtenerGenPorNombre("Maria");
         Gen genCarolina = obtenerGenPorNombre("Carolina");
@@ -233,7 +200,7 @@ public class IndividuoTp extends Individuo {
         Gen genAlejandra = obtenerGenPorNombre("Alejandra");
         return asList(1, 7).contains(genAlejandra.getUbicacionCasa()) ? 10 : 0;
     }
-    
+
     private int reglaAnaViveEnEsquina() {
         Gen genAna = obtenerGenPorNombre("Ana");
         return asList(1, 7).contains(genAna.getUbicacionCasa()) ? 10 : 0;
