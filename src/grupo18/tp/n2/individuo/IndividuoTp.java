@@ -21,6 +21,11 @@ public class IndividuoTp extends Individuo {
                 + reglaAlejandraViveEnEsquina()
                 + reglaCarlosViveAMitadDeCuadra()
                 + reglaAnaViveEnEsquina()
+                + reglaUnaPersonaViveEnFrenteDeOtraPersona("Rosa", "Ana")
+                + reglaUnaPersonaViveEnFrenteDeOtraPersona("Andres", "Alejandra")
+                + reglaUnaPersonaViveEnFrenteDeOtraPersona("Pablo", "Maria")
+                + reglaUnaPersonaViveEnFrenteDeOtraPersona("Ricardo", "Marta")
+                + reglaCarolinaViveEntreDosHombres()
                 + reglaMaríaViveMismaAceraQueCarolina();
     }
 
@@ -35,7 +40,7 @@ public class IndividuoTp extends Individuo {
 
         List<Integer> listaRandomAceras = obtenerListaRandomAcerasPorUbicaciones(ubicacionesUno, ubicacionesDos);
 
-        List<Integer> listaRandomUbicacionesCasa = cancatenarListas(ubicacionesUno, ubicacionesDos);
+        List<Integer> listaRandomUbicacionesCasa = concatenarListas(ubicacionesUno, ubicacionesDos);
 
         for (int i = 0; i < 14; i++) {
             int randomSexo = getNumeroRandom(0, 1);
@@ -105,7 +110,7 @@ public class IndividuoTp extends Individuo {
         return unoOCero == 1 ? 0 : 1;
     }
 
-    private List<Integer> cancatenarListas(List<Integer> ubicacionesUno, List<Integer> ubicacionesDos) {
+    private List<Integer> concatenarListas(List<Integer> ubicacionesUno, List<Integer> ubicacionesDos) {
         List<Integer> listaConcatenada = new ArrayList<>();
         listaConcatenada.addAll(ubicacionesUno);
         listaConcatenada.addAll(ubicacionesDos);
@@ -157,7 +162,7 @@ public class IndividuoTp extends Individuo {
 
         return 0;
     }
-    
+
     private int reglaRicardoViveAlLadoDeCarlos() {
         Gen genRicardo = obtenerGenPorNombre("Ricardo");
         Gen genCarlos = obtenerGenPorNombre("Carlos");
@@ -209,6 +214,28 @@ public class IndividuoTp extends Individuo {
     private int reglaCarlosViveAMitadDeCuadra() {
         Gen genCarlos = obtenerGenPorNombre("Carlos");
         return genCarlos.getUbicacionCasa() == 4 ? 10 : 0;
+    }
+
+    private int reglaUnaPersonaViveEnFrenteDeOtraPersona(String unNombre, String otroNombre) {
+        Gen genUnaPersona = obtenerGenPorNombre(unNombre);
+        Gen genOtraPersona = obtenerGenPorNombre(otroNombre);
+
+        return (!genUnaPersona.getAcera().equals(genOtraPersona.getAcera())
+                && genUnaPersona.getUbicacionCasa() == genOtraPersona.getUbicacionCasa()) ? 10 : 0;
+    }
+
+    private int reglaCarolinaViveEntreDosHombres() {
+        Gen genCarolina = obtenerGenPorNombre("Carolina");
+        if (asList(1, 7).contains(genCarolina.getUbicacionCasa())) {
+            return 0;
+        } else {
+            int ubicacionCasaCarolina = genCarolina.getUbicacionCasa();
+            String aceraCarolina = genCarolina.getAcera();
+            Gen genIzquierdaCarolina = obtenerGenPorUbicacionCasaYAcera(ubicacionCasaCarolina - 1, aceraCarolina);
+            Gen genDerechaCarolina = obtenerGenPorUbicacionCasaYAcera(ubicacionCasaCarolina + 1, aceraCarolina);
+
+            return "M".equals(genIzquierdaCarolina.getSexo()) && "M".equals(genDerechaCarolina.getSexo()) ? 10 : 0;
+        }
     }
 
 }
