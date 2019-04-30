@@ -26,7 +26,11 @@ public class IndividuoTp extends Individuo {
                 + reglaUnaPersonaViveEnFrenteDeOtraPersona("Pablo", "Maria")
                 + reglaUnaPersonaViveEnFrenteDeOtraPersona("Ricardo", "Marta")
                 + reglaCarolinaViveEntreDosHombres()
-                + reglaMaríaViveMismaAceraQueCarolina();
+                + reglaMaríaViveMismaAceraQueCarolina()
+                + reglaMartaDiagonalACarolina()
+                + reglaJuanViveDiagonalADosHombres()
+                + reglaEnAceraQueViveDavidVivenMasHombresQueMujeres()
+                + reglaLuisaViveTanCercaDeRosaComoCarlosDeAndres();
     }
 
     @Override
@@ -236,6 +240,68 @@ public class IndividuoTp extends Individuo {
 
             return "M".equals(genIzquierdaCarolina.getSexo()) && "M".equals(genDerechaCarolina.getSexo()) ? 10 : 0;
         }
+    }
+
+    private int reglaMartaDiagonalACarolina() {
+        Gen genMarta = obtenerGenPorNombre("Marta");
+        Gen genCarolina = obtenerGenPorNombre("Carolina");
+
+        if (!genMarta.getAcera().equals(genCarolina.getAcera())) {
+            int ubicacionMarta = genMarta.getUbicacionCasa();
+            int ubicacionCarolina = genCarolina.getUbicacionCasa();
+
+            return asList(ubicacionMarta + 1, ubicacionMarta - 1).contains(ubicacionCarolina) ? 10 : 0;
+        } else {
+            return 0;
+        }
+    }
+
+    private int reglaJuanViveDiagonalADosHombres() {
+        Gen genJuan = obtenerGenPorNombre("Juan");
+        int ubicacionJuan = genJuan.getUbicacionCasa();
+        String aceraJuan = genJuan.getAcera();
+
+        if (asList(1, 7).contains(ubicacionJuan)) {
+            return 0;
+        } else {
+            Gen genDiagonalDerechaAJuan = obtenerGenPorUbicacionCasaYAcera(ubicacionJuan + 1, aceraJuan);
+            Gen genDiagonalIzquierdaAJuan = obtenerGenPorUbicacionCasaYAcera(ubicacionJuan - 1, aceraJuan);
+
+            if ("M".equals(genDiagonalDerechaAJuan.getSexo()) && "M".equals(genDiagonalIzquierdaAJuan.getSexo())) {
+                return 10;
+            } else {
+                return 0;
+            }
+        }
+    }
+
+    private int reglaEnAceraQueViveDavidVivenMasHombresQueMujeres() {
+        Gen genDavid = obtenerGenPorNombre("David");
+        String aceraDavid = genDavid.getAcera();
+        long cantidadHombresAceraDavid = this.genes
+                .stream()
+                .filter(gen -> gen.getAcera().equals(aceraDavid))
+                .filter(gen -> gen.getSexo().equals("M"))
+                .count();
+
+        return cantidadHombresAceraDavid > 3 ? 10 : 0;
+    }
+
+    private int cercania(Gen unGen, Gen otroGen) {
+        int cercania = unGen.getUbicacionCasa() - otroGen.getUbicacionCasa();
+        return cercania > 0 ? cercania : -1 * cercania;
+    }
+
+    private int reglaLuisaViveTanCercaDeRosaComoCarlosDeAndres() {
+        Gen genLuisa = obtenerGenPorNombre("Luisa");
+        Gen genRosa = obtenerGenPorNombre("Rosa");
+        Gen genCarlos = obtenerGenPorNombre("Carlos");
+        Gen genAndres = obtenerGenPorNombre("Andres");
+
+        int cercaniaLuisYRosa = cercania(genLuisa, genRosa);
+        int cercaniaCarlosYAndres = cercania(genCarlos, genAndres);
+
+        return cercaniaLuisYRosa == cercaniaCarlosYAndres ? 10 : 0;
     }
 
 }

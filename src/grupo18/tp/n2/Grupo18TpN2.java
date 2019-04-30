@@ -20,16 +20,16 @@ public class Grupo18TpN2 {
         Seleccion seleccion = new Torneo();
 
         Cruzamiento cruzamiento = new Simple();
-        
+
         Mutacion mutacion = new MutacionSimple(0.1);
 
-        CriterioDeParo criterioDeParo = new TiempoTranscurrido(0, 8, 0);
+        CriterioDeParo criterioDeParo = new TiempoTranscurrido(0, 1, 0);
 
         // los incluimos en la configuracion
-        Configuracion configuracion = new ConfiguracionTp(criterioDeParo, 400000, seleccion, cruzamiento, mutacion);
+        Configuracion configuracion = new ConfiguracionTp(criterioDeParo, 10000, seleccion, cruzamiento, mutacion);
 
         AlgoritmoGenetico algoritmoGenetico = new AlgoritmoGenetico(configuracion, IndividuoTp.class);
-        
+
         algoritmoGenetico.ejecutar();
 
     }
